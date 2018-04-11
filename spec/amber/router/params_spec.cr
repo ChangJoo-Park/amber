@@ -3,11 +3,7 @@ require "../../../spec_helper"
 module Amber::Router
   describe Params do
     headers = HTTP::Headers.new
-    headers["Content-Type"] = "multipart/form-data; boundary=fhhRFLCazlkA0dX; charset=UTF-8"
-    multipart_content = ::File.read(::File.expand_path("spec/support/sample/multipart.txt"))
-    multipart_body = multipart_content.gsub("\n", "\r\n")
-    request = HTTP::Request.new("GET", "/?test=test&test=test2&#{HTTP::Request::METHOD}=put&status=1234", headers, multipart_body)
-    params = Params.new(request)
+    params = multipart_form_post
 
     describe "#[]" do
       it "return query string param" do
@@ -94,17 +90,35 @@ module Amber::Router
     end
 
     describe "#to_h" do
-      headers = HTTP::Headers.new
-      headers["Content-Type"] = "multipart/form-data; boundary=fhhRFLCazlkA0dX; charset=UTF-8"
-      multipart_content = ::File.read(::File.expand_path("spec/support/sample/multipart.txt"))
-      multipart_body = multipart_content.gsub("\n", "\r\n")
-      request = HTTP::Request.new("GET", "/?test=test&test=test2&#{HTTP::Request::METHOD}=put&status=1234", headers, multipart_body)
-      params = Params.new(request)
-
       it "returns a hash with all params" do
+        params = multipart_form_post
         params.to_h.keys.should eq %w(test _method status _csrf title content)
         params.to_h["test"].should eq "test"
       end
+
+      context "given a list of form fields" do
+        it "returns the first value for key" do
+          params = url_encoded_form_post
+          params.to_h["cat"].should eq "1"
+        end
+      end
     end
   end
+end
+
+def url_encoded_form_post
+  headers = HTTP::Headers.new
+  headers["Content-Type"] = "application/x-www-form-urlencoded"
+  body = "cat=1&cat=0&cat=-1"
+  request = HTTP::Request.new("GET", "/", headers, body)
+  Amber::Router::Params.new(request)
+end
+
+def multipart_form_post
+  headers = HTTP::Headers.new
+  headers["Content-Type"] = "multipart/form-data; boundary=fhhRFLCazlkA0dX; charset=UTF-8"
+  multipart_content = ::File.read(::File.expand_path("spec/support/sample/multipart.txt"))
+  multipart_body = multipart_content.gsub("\n", "\r\n")
+  request = HTTP::Request.new("POST", "/?test=test&test=test2&#{HTTP::Request::METHOD}=put&status=1234", headers, multipart_body)
+  Amber::Router::Params.new(request)
 end

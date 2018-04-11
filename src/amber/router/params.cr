@@ -61,7 +61,7 @@ module Amber::Router
     end
 
     def override_method?(key : Types::Key)
-      query[key]? || form[key]? || multipart[key]?
+      form[key]? || query[key]? || multipart[key]?
     end
 
     def to_h
