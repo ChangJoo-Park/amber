@@ -54,24 +54,6 @@ h6, .h6 {
   text-decoration: none;
 }
 
-/* Active state gets a caret at the bottom */
-.nav .active {
-  color: #fff;
-}
-.nav .active:after {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 0;
-  margin-left: -5px;
-  vertical-align: middle;
-  content: " ";
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid;
-  border-left: 5px solid transparent;
-}
-
 .main {
   padding-top: 20px;
 }
@@ -80,12 +62,16 @@ h6, .h6 {
   background-color: $background-color;
   background-image: url("../images/logo.png");
   background-size:contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius:5px;
+  margin: auto;
   width: 200px;
   height:278px;
 }
 
 /* Hide logo in small screens */
-@media (max-width: 767px) {
+@media (max-width: 575px) {
   #logo {
     display: none;
   }
