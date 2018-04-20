@@ -11,8 +11,7 @@
   <body>
     <div class="masthead">
       <div class="container">
-        
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg navbar-dark">
           <a class="navbar-brand" href="#"><%= display_name %></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -37,8 +36,10 @@
         </div>
       </div>
     
-      <div class="main">
-        <%="<"%>%= content %>
+      <div class="row">
+        <div class="main">
+          <%="<"%>%= content %>
+        </div>      
       </div>
     </div>
 
